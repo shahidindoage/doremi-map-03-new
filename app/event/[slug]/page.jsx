@@ -689,12 +689,13 @@ translateX = '-60%'
   style={{
     position: 'fixed',
     top: 0,
-    right: showCart ? 0 : "-360px",
+    right: 0,
     width: 360,
     height: '100vh',
     background: '#1a1a1a',
     color: '#fff',
-    transition: 'right 0.35s ease',
+    transform: showCart ? "translateX(0)" : "translateX(360px)",
+    transition: "transform 0.35s ease",
     padding: '24px 20px',
     zIndex: 2000,
     display: 'flex',
@@ -703,27 +704,10 @@ translateX = '-60%'
     boxShadow: '-5px 0 20px rgba(0,0,0,0.5)',
     borderLeft: '1px solid #333',
     fontFamily: 'Arial, sans-serif',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch', // Safari fix
   }}
 >
-  {/* Close Button */}
-  {/* <button
-    onClick={() => setShowCart(false)}
-    style={{
-      position: 'absolute',
-      top: 16,
-      right: 16,
-      background: 'transparent',
-      border: 'none',
-      color: '#f5c400',
-      fontSize: 22,
-      cursor: 'pointer',
-      fontWeight: 700,
-      padding: 0,
-    }}
-    title="Close Cart"
-  >
-    ✖
-  </button> */}
 
   {/* Cart Content */}
   <div style={{ flexGrow: 1, overflowY: 'auto', paddingTop: 40 }}>
@@ -769,10 +753,8 @@ translateX = '-60%'
         ))}
       </ul>
     )}
-  </div>
 
-  {/* Checkout Button */}
-  {cartItems.length > 0 && (
+    {cartItems.length > 0 && (
   <button
     onClick={() => setShowUserForm(true)} 
     style={{
@@ -794,6 +776,10 @@ translateX = '-60%'
     Checkout
   </button>
 )}
+  </div>
+
+  {/* Checkout Button */}
+  
 
 </div>
 {/* // 1️⃣ Name & Email Popup */}
