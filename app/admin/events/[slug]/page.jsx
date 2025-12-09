@@ -80,12 +80,12 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ✅ Table Cards */}
-      <div style={styles.tablesWrap}>
+      <div style={styles.tablesWrap}> 
         {eventData.tables.map((t) => (
           <div key={t.number} style={styles.tableCard}>
             <h3 style={styles.tableHeader}>
               Table {t.number}
-              <span style={styles.priceTag}>{Number(t.price).toFixed(3)} AED</span>
+              <span style={styles.priceTag}>{Number(t.price).toLocaleString()} AED</span>
             </h3>
 
             <div style={styles.seatsWrap}>
