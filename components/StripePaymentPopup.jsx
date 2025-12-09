@@ -65,7 +65,7 @@ function CheckoutForm({ onSuccess, clientSecret, customerName, customerEmail, cu
     <form onSubmit={handleSubmit} style={{ fontSize: "0.85rem" }}>
       {/* Total Amount */}
       <div style={{ fontWeight: 600, textAlign: "right", marginBottom: 10, color: "black" }}>
-        Total: AED {totalAmount.toFixed(2)}
+        Total: AED {Number(totalAmount).toLocaleString("en-IN")}
       </div>
 
       <PaymentElement options={{ layout: "tabs" }} />

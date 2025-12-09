@@ -522,8 +522,8 @@ translateX = '-60%'
           </div>
           <div style={{ fontSize: 10, color: '#111', fontWeight: 600 }}>
             {tooltip.seat.booked
-              ? `Price: ${Number(tooltip.seat.price).toFixed(3)} AED`
-              : `Price: ${Number(tooltip.seat.price).toFixed(3)} AED`}
+              ? `Price: ${Number(tooltip.seat.price).toLocaleString()} AED`
+              : `Price: ${Number(tooltip.seat.price).toLocaleString()} AED`}
           </div>
          {/* Tooltip Button (with WhatsApp link) */}
 {tooltip.seat.booked ? (
@@ -569,7 +569,7 @@ translateX = '-60%'
 
     {/* ✅ WhatsApp Booking */}
     <a
-      href={`https://wa.me/123456789?text=Hello! I'm interested in booking Seat ${tooltip.seat.tableNumber}-${tooltip.seat.seatNo} (Price: ${Number(tooltip.seat.price).toFixed(3)} AED).`}
+      href={`https://wa.me/123456789?text=Hello! I'm interested in booking Seat ${tooltip.seat.tableNumber}-${tooltip.seat.seatNo} (Price: ${Number(tooltip.seat.price).toLocaleString()} AED).`}
       target="_blank"
       rel="noopener noreferrer"
       style={{
@@ -733,7 +733,7 @@ translateX = '-60%'
               Table <strong>{item.tableNumber}</strong> - Seat <strong>{item.seatNo}</strong>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>{item.price.toFixed(3)} AED</span>
+              <span>{Number(item.price).toLocaleString()} AED</span>
               <button
                 onClick={() => removeFromCart(item)}
                 style={{
