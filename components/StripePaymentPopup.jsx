@@ -68,7 +68,16 @@ function CheckoutForm({ onSuccess, clientSecret, customerName, customerEmail, cu
         Total: AED {Number(totalAmount).toLocaleString("en-IN")}
       </div>
 
-      <PaymentElement options={{ layout: "tabs" }} />
+      <PaymentElement
+  options={{
+    layout: {
+      type: "accordion",
+      defaultCollapsed: false,
+      radios: true,
+    },
+  }}
+/>
+
 
       <button type="submit" disabled={loading || allBooked} style={smallButtonStyle}>
         {loading && !allBooked ? <div style={smallSpinnerStyle}></div> : allBooked ? "✅ Booked!" : "Pay Now"}
