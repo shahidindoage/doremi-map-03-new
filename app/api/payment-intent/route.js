@@ -14,6 +14,7 @@ export async function POST(req) {
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(totalAmount * 100),
       currency: "aed",
+      receipt_email: customerEmail,
       metadata: { tableNo: tableNos, seatNo: seatNos, customerName, customerEmail, customerPhone },
       automatic_payment_methods: { enabled: true },
     });
