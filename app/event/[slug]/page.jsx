@@ -28,6 +28,13 @@ const [customerName, setCustomerName] = useState('');
 const [customerEmail, setCustomerEmail] = useState('');
 const [customerPhone, setCustomerPhone] = useState('');
 
+const [errors, setErrors] = useState({
+  name: "",
+  email: "",
+  phone: "",
+});
+
+
 const handlePaymentSuccess = () => {
     router.refresh(); // WORKS
   };
@@ -418,6 +425,14 @@ const removeFromCart = (seat) => {
   ));
 };
 
+const validateEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+const validatePhone = (phone) => {
+  return /^[0-9]{8,15}$/.test(phone); // 8–15 digits
+};
+
 
   return (
     <div className='main'>
@@ -793,36 +808,50 @@ translateX = '-60%'
       <div style={{ marginBottom: 12 }}>
         <label style={labelStyle}>Name</label>
         <input
-          type="text"
-          placeholder="Enter your full name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          style={inputStyle}
-        />
+  type="text"
+  placeholder="Enter your full name"
+  value={customerName}
+  onChange={(e) => {
+    setCustomerName(e.target.value);
+    setErrors({ ...errors, name: "" });
+  }}
+  style={inputStyle}
+/>
+{errors.name && <p style={errorText}>{errors.name}</p>}
       </div>
 
       {/* Email */}
       <div style={{ marginBottom: 12 }}>
         <label style={labelStyle}>Email</label>
         <input
-          type="email"
-          placeholder="Enter your email"
-          value={customerEmail}
-          onChange={(e) => setCustomerEmail(e.target.value)}
-          style={inputStyle}
-        />
+  type="email"
+  placeholder="Enter your email"
+  value={customerEmail}
+  onChange={(e) => {
+    setCustomerEmail(e.target.value);
+    setErrors({ ...errors, email: "" });
+  }}
+  style={inputStyle}
+/>
+{errors.email && <p style={errorText}>{errors.email}</p>}
+
       </div>
 
       {/* Phone */}
       <div style={{ marginBottom: 12 }}>
         <label style={labelStyle}>Phone</label>
         <input
-          type="tel"
-          placeholder="Enter your phone"
-          value={customerPhone}
-          onChange={(e) => setCustomerPhone(e.target.value)}
-          style={inputStyle}
-        />
+  type="tel"
+   placeholder="Enter your phone"
+  value={customerPhone}
+  onChange={(e) => {
+    setCustomerPhone(e.target.value.replace(/\D/g, ""));
+    setErrors({ ...errors, phone: "" });
+  }}
+  style={inputStyle}
+/>
+{errors.phone && <p style={errorText}>{errors.phone}</p>}
+
       </div>
 
       {/* Buttons */}
@@ -837,12 +866,33 @@ translateX = '-60%'
         <button
           style={continueButtonStyle}
           onClick={() => {
-            if (!customerName || !customerEmail || !customerPhone) {
-              return alert("Fill all fields");
-            }
-            setShowUserForm(false);
-            setShowPayment(true);
-          }}
+  let newErrors = { name: "", email: "", phone: "" };
+
+  if (!customerName.trim()) {
+    newErrors.name = "Name is required";
+  }
+
+  if (!customerEmail.trim()) {
+    newErrors.email = "Email is required";
+  } else if (!validateEmail(customerEmail)) {
+    newErrors.email = "Enter a valid email address";
+  }
+
+  if (!customerPhone.trim()) {
+    newErrors.phone = "Phone number is required";
+  } else if (!validatePhone(customerPhone)) {
+    newErrors.phone = "Phone must contain 8–15 digits";
+  }
+
+  setErrors(newErrors);
+
+  if (newErrors.name || newErrors.email || newErrors.phone) {
+    return;
+  }
+
+  setShowUserForm(false);
+  setShowPayment(true);
+}}
         >
           Continue to Payment
         </button>
@@ -942,4 +992,9 @@ const continueButtonStyle = {
   border: "none",
   cursor: "pointer",
   fontWeight: 600,
+};
+const errorText = {
+  color: "red",
+  fontSize: "12px",
+  marginTop: "4px",
 };

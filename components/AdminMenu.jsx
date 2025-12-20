@@ -141,7 +141,7 @@ const handleResetPassword = async (username, currentPass, newPass, confirmPass) 
         <div style={dropdownStyle}>
           <DropdownItem icon="⭐" text="Event Page" as={Link} href="/event/grand-music-night-2025" onClick={() => setOpen(false)} />
           <DropdownItem icon="💰" text="Bookings" as={Link} href="/admin/bookings" onClick={() => setOpen(false)} />
-
+          <DropdownItem icon="🎫" text="Coupons" as={Link} href="/admin/coupons" onClick={() => setOpen(false)} />
           {adminRole === 'OWNER' && (
             <>
               <DropdownItem icon="🔑" text="Reset Password" onClick={() => setShowResetModal(true)} />

@@ -74,3 +74,21 @@ model Booking {
   bookedAt    DateTime @default(now())
    paymentIntentId String 
 }
+
+
+model Coupon {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique
+  discount    Float     // can be AED amount or percentage if you like
+  type        CouponType @default(FIXED) // FIXED = AED, PERCENT = %
+  expiry      DateTime
+  maxUsage    Int?       // optional: limit number of times coupon can be used
+  usageCount  Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum CouponType {
+  FIXED
+  PERCENT
+}

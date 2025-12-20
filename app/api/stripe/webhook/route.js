@@ -30,6 +30,9 @@ export async function POST(req) {
     const tableNos = (pi.metadata.tableNo || "").split(",");
     const seatNos = (pi.metadata.seatNo || "").split(",");
 
+    const ticketCount = seatNos.filter(Boolean).length;
+
+
     const name = charge?.billing_details?.name || pi.metadata.customerName;
     const email = charge?.billing_details?.email || pi.metadata.customerEmail;
     const phone = pi.metadata.customerPhone;
@@ -64,30 +67,53 @@ try {
     to: email,
     subject: "DOREMI: Payment Successful & Booking Confirmed",
     html: `
-      <div style="font-family: 'Poppins', sans-serif; background-color: #171717; padding: 50px;">
-      <div style="max-width: 600px; margin: 0 auto; background-color: #212121; border-radius: 10px; padding: 30px;">
-        
-        <!-- Logo -->
-        <div style="text-align: center; margin-bottom: -30px; margin-top: -5%;">
-          <img src="https://lottery-v4.vercel.app/_next/image?url=%2Flogo.PNG&w=256&q=75" alt="DOREMI" style="max-width: 150px;">
-        </div>
+<div style="font-family: 'Poppins', sans-serif; background-color: #171717; padding: 40px;">
+  <div style="max-width: 620px; margin: 0 auto; background-color: #212121; border-radius: 12px; padding: 30px;">
 
-        <!-- Heading -->
-        <h2 style="color: #d6af67; margin-bottom: 20px; text-align: center;">🎉 Payment Successful</h2>
-        
-        <!-- Greeting -->
-        <p style="font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.6;">Hi <strong>${name}</strong>,</p>
-        <p style="font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.6;">
-          Your payment has been received successfully. Your seats are now confirmed.
-        </p>
+    <!-- Logo -->
+    <div style="text-align: center; margin-bottom: 10px;">
+      <img src="https://lottery-v4.vercel.app/_next/image?url=%2Flogo.PNG&w=256&q=75" alt="DOREMI" style="max-width: 140px;">
+    </div>
 
-       <div style="
+    <!-- Heading -->
+    <h2 style="color: #d6af67; text-align: center; margin-bottom: 8px;">
+      🎉 Booking Confirmed
+    </h2>
+
+    <p style="text-align: center; color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 25px;">
+      Your payment was successful. Below are your ticket details.
+    </p>
+
+    <!-- Summary Box -->
+    <div style="background: rgba(33,33,33,0.6); border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+      <table width="100%" cellpadding="6" cellspacing="0">
+        <tr>
+          <td style="color:#d6af67; font-weight:600;">Name</td>
+          <td style="color:rgba(255,255,255,0.85);">${name}</td>
+        </tr>
+        <tr>
+          <td style="color:#d6af67; font-weight:600;">Tickets</td>
+         <td style="color:rgba(255,255,255,0.85);">${ticketCount}</td>
+        </tr>
+        <tr>
+          <td style="color:#d6af67; font-weight:600;">Event Date & Time</td>
+          <td style="color:rgba(255,255,255,0.85);">31/12/2025</td>
+        </tr>
+        <tr>
+          <td style="color:#d6af67; font-weight:600;">Payment ID</td>
+          <td style="color:rgba(255,255,255,0.85); font-size:13px;">${pi.id}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Ticket Layout -->
+      <div style="
   background-color: rgba(33, 33, 33, 0.6); 
   border-radius: 8px; 
   padding: 16px; 
   margin: 20px 0; 
 ">
-  <p style="font-weight: bold; color: #d6af67; margin-bottom: 10px;">Booking Details:</p>
+  <p style="font-weight: bold; color: #d6af67; margin-bottom: 10px;">Seating Location:</p>
 
   <table width="100%" cellspacing="0" cellpadding="0" style="border-collapse: collapse;">
     <tr>
@@ -113,21 +139,22 @@ try {
   </table>
 </div>
 
-       
-
-        <!-- Thank you -->
-        <p style="font-size: 16px; color: rgba(255,255,255,0.5); margin-top: 20px;">
-          Thank you for your booking!
-        </p>
-
-        <!-- Footer -->
-        <p style="font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 30px; text-align: center; text-transform: uppercase;">
-          © 2025 by DOREMI. All Rights Reserved
-        </p>
-
-      </div>
+    <!-- Important Note -->
+    <div style="background: rgba(214,175,103,0.15); border-left: 4px solid #d6af67; padding: 14px; border-radius: 6px; margin-bottom: 20px;">
+      <p style="color: rgba(255,255,255,0.9); font-size: 14px; margin: 0;">
+        ⚠️ Please present this ticket at reception.
+      </p>
     </div>
-    `,
+
+    <!-- Footer -->
+    <p style="font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; margin-top: 30px;">
+      © 2025 DOREMI. All rights reserved.
+    </p>
+
+  </div>
+</div>
+`,
+
   });
 
 } catch (emailErr) {
